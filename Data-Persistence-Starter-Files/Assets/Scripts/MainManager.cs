@@ -11,6 +11,7 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
 
     public Text ScoreText;
+    public Text highScoreText;
     public GameObject GameOverText;
     
     private bool m_Started = false;
@@ -22,6 +23,7 @@ public class MainManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        thewholepoint.Instance.Loadname();
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
         
@@ -36,6 +38,8 @@ public class MainManager : MonoBehaviour
                 brick.onDestroyed.AddListener(AddPoint);
             }
         }
+
+        
     }
 
     private void Update()
@@ -60,6 +64,17 @@ public class MainManager : MonoBehaviour
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         }
+
+        if (m_Points > thewholepoint.Instance.phigh)
+        {
+            Debug.Log("highscore");
+            thewholepoint.Instance.phigh = m_Points;
+            thewholepoint.Instance.pname = thewholepoint.Instance.currname;
+            thewholepoint.Instance.Savename();
+        }
+
+
+        highScoreText.text = "Best score :" + thewholepoint.Instance.pname.ToString() +":" +thewholepoint.Instance.phigh.ToString();
     }
 
     void AddPoint(int point)
